@@ -1,0 +1,10 @@
+<Environment>
+	<Variable>
+		<Name>CurrDir</Name>
+		<Value>C:\Data Backup\C Drive Backup\Automation_BaseLineDataSetup\MergedSCAFW\QAFramework3x\</Value>
+	</Variable>
+	<Variable>
+		<Name>Testing_Environment</Name>
+		<Value>DSTNONLIVE</Value>
+	</Variable>
+</Environment>
