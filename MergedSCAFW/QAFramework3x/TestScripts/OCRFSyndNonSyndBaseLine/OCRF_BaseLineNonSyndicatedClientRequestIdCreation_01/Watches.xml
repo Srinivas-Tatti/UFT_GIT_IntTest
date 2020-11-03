@@ -1,0 +1,6 @@
+﻿<Properties>
+  <WatchEntry0 value="Environment.Value(&quot;TestScenariosFile&quot;)" />
+  <WatchEntry1 value="FileName" />
+  <WatchEntry2 value="DynamicPath" />
+  <WatchEntry3 value="SheetName" />
+</Properties>
