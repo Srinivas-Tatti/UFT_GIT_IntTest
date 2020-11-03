@@ -1,0 +1,88 @@
+Function  AddNewLinesINAddUserTab(ByVal FileName,ByVal sheetName,ByVal RowStart,ByVal RowEnd,ByRef objData)
+
+   
+   NoOfUser=(RowEnd-RowStart)+1
+   ' Check tab 'Add User' opened.
+   
+	If Browser("Browser-OCRF").Page("Page-OCRF").WebElement("WebElementOfferingUserList").Exist(30) Then
+	   Call ReportStep (StatusTypes.Pass,  "'Add User' tab opened","Add user tab")
+    Else
+       Call ReportStep (StatusTypes.Fail,  "'Add User' tab not opened","Add user tab")
+    End If
+    
+    Set Tab=Browser("Browser-OCRF").Page("Page-OCRF").Link("html tag:=A","class:=selected")
+	Call ValidateActiveTabOrangeColour(Tab,"Add Users",objData)
+
+	Call ImportSheet(SheetName,FileName)
+
+	Datatable.SetCurrentRow(RowStart)
+	
+	For Iterator = RowStart To RowEnd Step 1
+	
+		If NoOfUser <> "" Then
+			ClientName = dataTable.value("Client_Name",SheetName)
+			UserId = dataTable.value("User_Login_Id",SheetName)
+			Country = dataTable.value("Country",SheetName)
+		'	UserId = "imitestuser9400@uk.imshealth.com"
+		'	ClientName = "AutomatedClient1"
+			'Country = "Canada"
+			
+			
+			If Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-pg-div","html tag:=DIV","innertext:=Add New Line","visible:=True").Exist Then
+				Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-pg-div","html tag:=DIV","innertext:=Add New Line","visible:=True").click
+			elseif Browser("Browser-OCRF").Page("Page-OCRF").WebElement("WebElement_AddNewLine").Exist then
+				Browser("Browser-OCRF").Page("Page-OCRF").WebElement("WebElement_AddNewLine").Click	
+			end if				
+			
+			row=Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").RowCount
+			
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 2,"WebCheckBox",0).highlight
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 2,"WebCheckBox",0).set "ON"
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 9,"WebEdit",0).highlight
+			'changes by srinivas-23rd sept 2020
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 9,"WebEdit",0).click
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 9,"WebEdit",0).set UserId
+			Call Pageloading()	
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 2,"WebCheckBox",0).set "ON"
+			'Srinivas-Commenting below line
+			'Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 2,"WebCheckBox",0).set "ON"
+			'changes by srinivas-23rd sept 2020
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 13,"WebEdit",0).click
+			
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 13,"WebEdit",0).highlight
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 13,"WebEdit",0).set ClientName
+			
+			 Set objShell=CreateObject("WScript.Shell")
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 13,"WebEdit",0).click
+			objShell.SendKeys "{DOWN}"
+			wait 1
+			'Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-corner.*","innertext:="&ClientName,"html id:=ui-id-.*").fireevent "onmouseover" 
+			Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-corner.*","innertext:="&ClientName,"html id:=ui-id-.*").highlight
+			wait 2
+			Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-corner.*","innertext:="&ClientName,"html id:=ui-id-.*").Click		
+			Call Pageloading()
+
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 2,"WebCheckBox",0).set "ON"
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 2,"WebCheckBox",0).set "ON"
+			
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 14,"WebEdit",0).highlight
+			'changes by srinivas-23rd sept 2020
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 14,"WebEdit",0).click
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 14,"WebEdit",0).set Country
+			Browser("Browser-OCRF").Page("Page-OCRF").WebTable("WebTable_User_List_Data").ChildItem(row, 14,"WebEdit",0).click
+			objShell.SendKeys "{DOWN}"
+			wait 1
+			'Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-corner.*","innertext:="&Country,"html id:=ui-id-.*").fireevent "onmouseover" 
+			Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-corner.*","innertext:="&Country,"html id:=ui-id-.*").highlight
+			wait 2
+			Browser("Browser-OCRF").Page("Page-OCRF").WebElement("class:=ui-corner.*","innertext:="&Country,"html id:=ui-id-.*").Click		
+		
+			End If
+		wait 3
+		DataTable.GetSheet(SheetName).SetNextRow	
+	wait 3
+Next
+
+wait 3	
+	
+End Function
